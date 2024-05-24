@@ -112,14 +112,14 @@ function SignUp() {
       <div className="md:w-1/2 bg-gray-500 p-8 rounded-lg">
         <div className="flex justify-center flex-col mb-6">
              <img src="img/Loginheader.svg" alt="" className="h-20 mb-10"/>
-        <h1 className="text-xl font-bold mb-4">How does Ethiojobs works?</h1>
+        <h1 className="text-xl font-bold mb-4 text-gray-300">How does Ethiojobs works?</h1>
         </div>
        
         <ul className="">
           <li className="mb-10 flex flex-col justify-center">
             <img src="img/Che.svg" alt="" className="h-10"/>
             <span className="font-bold text-gray-300">Create an account</span>
-            <p>
+            <p className="text-gray-300">
               Create an account and set up your profile by adding details about
               yourself such as your educational background, work experience,
               skills & qualifications.
@@ -128,7 +128,7 @@ function SignUp() {
           <li className="mb-10 flex flex-col justify-center">
           <img src="img/Che.svg" alt=""className="h-10" />
             <span className="font-bold text-gray-300">Search for Jobs</span>
-            <p>
+            <p className="text-gray-300">
               Browse through thousands of job listings tailored to your skills
               and preferences.
             </p>
@@ -136,7 +136,7 @@ function SignUp() {
           <li className="mb-4 flex flex-col justify-center">
           <img src="img/Che.svg" alt="" className="h-10"/>
             <span className="font-bold text-gray-300">Apply to Jobs</span>
-            <p>
+            <p className="text-gray-300">
               Apply to jobs that match your interests and qualifications,
               directly from Ethiojobs.
             </p>
