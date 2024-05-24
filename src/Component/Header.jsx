@@ -7,7 +7,7 @@ function Header() {
   const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
 
   return (
-    <div className="p-2 bg-white shadow-md lg:px-20">
+    <div className="p-2 bg-white lg:px-20 shadow-md">
       <div className="flex justify-between items-center">
         <div className="">
         <Link to="/hero">

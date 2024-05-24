@@ -15,7 +15,7 @@ function SignUp() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row max-w-4xl m-auto mt-10 items-center gap-4 p-10">
+    <div className="flex flex-col md:flex-row max-w-4xl m-auto mt-10 items-center gap-4 p-12 shadow-md">
       {/* Sign Up Form */}
       <div className="md:w-1/2 bg-white p-8">
         <h2 className="text-xl font-bold mb-6">Sign Up</h2>
@@ -100,27 +100,29 @@ function SignUp() {
             LOGIN
           </a>
           <div className="text-gray-400 my-6">
-          __________________________ or __________________________
-        </div>
-        <div className="flex flex-col items-center justify-center mt-4 gap-4">
-          <button className="border border-gray-300 bg-white hover:bg-gray-200 text-gray-800 font-bold py-2 px-10 rounded-full mr-2 focus:outline-none focus:shadow-outline">
-            <FaGoogle className="inline-block mr-2" /> Log in with Google
-          </button>
-          <button className="border border-gray-300 bg-white hover:bg-gray-200 text-gray-800 font-bold py-2 px-10 rounded-full focus:outline-none focus:shadow-outline">
-            <FaLinkedin className="inline-block mr-2" /> Log in with LinkedIn
-          </button>
-        </div>
+            __________________________ or __________________________
+          </div>
+          <div className="flex flex-col items-center justify-center mt-4 gap-4">
+            <button className="border border-gray-300 bg-white hover:bg-gray-200 text-gray-800 font-bold py-2 px-10 rounded-full mr-2 focus:outline-none focus:shadow-outline">
+              <FaGoogle className="inline-block mr-2" /> Log in with Google
+            </button>
+            <button className="border border-gray-300 bg-white hover:bg-gray-200 text-gray-800 font-bold py-2 px-10 rounded-full focus:outline-none focus:shadow-outline">
+              <FaLinkedin className="inline-block mr-2" /> Log in with LinkedIn
+            </button>
+          </div>
         </div>
       </div>
-      <div className="md:w-1/2 bg-gray-500 p-8 rounded-lg">
+      <div className="md:w-1/2 bg-gray-500 p-8 rounded-lg shadow-md">
         <div className="flex justify-center flex-col mb-6">
-             <img src="img/Loginheader.svg" alt="" className="h-20 mb-10"/>
-        <h1 className="text-xl font-bold mb-4 text-gray-300">How does Ethiojobs works?</h1>
+          <img src="img/Loginheader.svg" alt="" className="h-20 mb-10" />
+          <h1 className="text-xl font-bold mb-4 text-gray-300">
+            How does Ethiojobs works?
+          </h1>
         </div>
-       
+
         <ul className="">
           <li className="mb-10 flex flex-col justify-center">
-            <img src="img/Che.svg" alt="" className="h-10"/>
+            <img src="img/Che.svg" alt="" className="h-10" />
             <span className="font-bold text-gray-300">Create an account</span>
             <p className="text-gray-300">
               Create an account and set up your profile by adding details about
@@ -129,7 +131,7 @@ function SignUp() {
             </p>
           </li>
           <li className="mb-10 flex flex-col justify-center">
-          <img src="img/Che.svg" alt=""className="h-10" />
+            <img src="img/Che.svg" alt="" className="h-10" />
             <span className="font-bold text-gray-300">Search for Jobs</span>
             <p className="text-gray-300">
               Browse through thousands of job listings tailored to your skills
@@ -137,7 +139,7 @@ function SignUp() {
             </p>
           </li>
           <li className="mb-4 flex flex-col justify-center">
-          <img src="img/Che.svg" alt="" className="h-10"/>
+            <img src="img/Che.svg" alt="" className="h-10" />
             <span className="font-bold text-gray-300">Apply to Jobs</span>
             <p className="text-gray-300">
               Apply to jobs that match your interests and qualifications,
