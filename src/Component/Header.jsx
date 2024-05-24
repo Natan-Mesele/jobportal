@@ -20,13 +20,15 @@ function Header() {
         <div className="hidden sm:block">
           <div className="flex gap-4 item-center uppercase text-sm">
             <Link to="/" className="border-b-2 border-white">
-              Menu
+            Find Jobs
             </Link>
-            <Link to="/reservation">Reservation</Link>
+            <Link to="/reservation">Find Companies</Link>
             <Link to="/cart">
-              Cart
+            Blog
             </Link>
-            <Link to="/login">Login</Link>
+            <Link to="/login">Contact Us</Link>
+            <Link to="/login">Log in</Link>
+            <Link to="/signup">Sign up</Link>
           </div>
           
         </div>
