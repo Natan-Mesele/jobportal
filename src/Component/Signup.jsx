@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaGoogle, FaLinkedin } from "react-icons/fa";
 
 function SignUp() {
   const [fullName, setFullName] = useState("");
@@ -97,16 +98,18 @@ function SignUp() {
           Already have a Job Seeker Account?{" "}
           <a href="/login" className="text-blue-500 hover:underline">
             LOGIN
-          </a>{" "}
-          or sign in with{" "}
-          <div className="mt-10 flex gap-10 justify-center">
-            <button className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:bg-red-600">
-              Google
-            </button>{" "}
-            <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-              LinkedIn
-            </button>
-          </div>
+          </a>
+          <div className="text-gray-400 my-6">
+          __________________________ or __________________________
+        </div>
+        <div className="flex flex-col items-center justify-center mt-4 gap-4">
+          <button className="border border-gray-300 bg-white hover:bg-gray-200 text-gray-800 font-bold py-2 px-10 rounded-full mr-2 focus:outline-none focus:shadow-outline">
+            <FaGoogle className="inline-block mr-2" /> Log in with Google
+          </button>
+          <button className="border border-gray-300 bg-white hover:bg-gray-200 text-gray-800 font-bold py-2 px-10 rounded-full focus:outline-none focus:shadow-outline">
+            <FaLinkedin className="inline-block mr-2" /> Log in with LinkedIn
+          </button>
+        </div>
         </div>
       </div>
       <div className="md:w-1/2 bg-gray-500 p-8 rounded-lg">
