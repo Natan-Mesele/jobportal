@@ -7,7 +7,7 @@ const initialState = {
     error: null,
   };
   
-  export const jobReducer = (state = initialState, action) => {
+  export const jobReducer = (state = { jobs: [], loading: false, error: null }, action) => {
     switch (action.type) {
       // Create Job
       case CREATE_JOB_REQUEST:
@@ -22,11 +22,22 @@ const initialState = {
   
       // Get a Single Job
       case GET_JOB_REQUEST:
-        return { ...state, loading: true, error: null };
+        return { 
+          ...state, 
+          loading: true, 
+          error: null };
       case GET_JOB_SUCCESS:
-        return { ...state, loading: false, job: action.payload };
+        return { 
+          ...state, 
+          loading: false, 
+          job: action.payload 
+        };
       case GET_JOB_FAILURE:
-        return { ...state, loading: false, error: action.payload };
+        return { 
+          ...state, 
+          loading: false, 
+          error: action.payload 
+        };
   
       // Get All Jobs
       case GET_ALL_JOBS_REQUEST:

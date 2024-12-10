@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 function ContactUs() {
+  const form = useRef(); // Use a ref to target the form
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic (e.g., send the data to an API or email)
     alert('Form submitted');
+  };
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm("service_tr8x3hy", "template_r9zhhsw", form.current, "85el7MKTL1vd_8b8q")
+      .then((result) => {
+        console.log('Success:', result.text);
+        alert('Message sent successfully!');
+        // Clear the form fields
+        e.target.reset();
+      })
+      .catch((error) => {
+        console.error('Error:', error.text);
+        alert('Failed to send message.');
+      });
   };
 
   return (
@@ -28,15 +45,16 @@ function ContactUs() {
         </div>
       </div>
       {/* Contact Form and Map Section */}
-      <div className="flex justify-center items-start mt-8 px-8">
+      <div className="flex flex-col md:flex-row justify-center items-start mt-8 px-8 space-y-8 lg:space-y-0 md:space-x-8 lg:mx-16">
         {/* Left: Contact Form */}
-        <div className="w-full sm:w-3/4 lg:w-1/2 p-8 bg-white rounded-lg shadow-lg mr-8">
-          <form onSubmit={handleSubmit}>
+        <div className="w-full lg:w-1/2 p-8 bg-white rounded-lg shadow-lg">
+          <form ref={form} onSubmit={sendEmail}>
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-semibold mb-2">Your Name</label>
               <input
                 type="text"
                 id="name"
+                name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -49,6 +67,7 @@ function ContactUs() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -60,6 +79,7 @@ function ContactUs() {
               <label htmlFor="message" className="block text-sm font-semibold mb-2">Your Message</label>
               <textarea
                 id="message"
+                name="message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -78,8 +98,7 @@ function ContactUs() {
         </div>
 
         {/* Right: Map */}
-        <div className="w-full sm:w-3/4 lg:w-1/2 bg-gray-200 rounded-lg shadow-lg">
-          {/* You can replace the iframe with the actual map URL */}
+        <div className="w-full lg:w-1/2 bg-gray-200 rounded-lg shadow-lg">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.5383923537677!2d106.66533241522266!3d10.803713974320297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752ee1987b1c9f%3A0x240a4066c4d9e4b8!2zMTAsIFRo4buV!5e0!3m2!1sen!2s!4v1654672147"
             width="100%"
@@ -92,6 +111,7 @@ function ContactUs() {
           ></iframe>
         </div>
       </div>
+
     </div>
   );
 }

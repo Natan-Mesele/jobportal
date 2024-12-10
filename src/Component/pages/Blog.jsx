@@ -9,18 +9,20 @@ function Blog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const blogsPerPage = 6;
+  const jwt = localStorage.getItem("jwt");
+
 
   useEffect(() => {
-    dispatch(getAllBlogs());
-  }, [dispatch]);
+    dispatch(getAllBlogs(jwt));
+  }, [dispatch, jwt]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (error && typeof error === 'object') {
+    return <div>Error: {error.message || 'An error occurred'}</div>;
+  }  
 
   const filteredBlogs = blogs.filter(blog =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -66,28 +68,21 @@ function Blog() {
           </div>
         </div>
         {/* Cards Section */}
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 px-8 mx-auto mx-32">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 px-8 mx-auto mx-16">
           {currentBlogs.map((blog) => (
-            <div key={blog.id} className="bg-white shadow-lg rounded-lg p-4">
-              {blog.imageUrl && (
-                <img
-                  src={blog.imageUrl}
-                  alt={blog.title}
-                  className="w-full h-48 object-cover mb-4 rounded-lg"
-                />
-              )}
-
-              <div className="flex justify-between text-sm text-gray-500 mb-2">
-                <span>Published on: {new Date(blog.createdAt).toLocaleDateString()}</span>
-                <span>Publisher: {blog.author}</span>
+            blog.id && blog.title && blog.content ? (
+              <div key={blog.id} className="bg-white shadow-lg rounded-lg p-4">
+                {blog.imageUrl && (
+                  <img
+                    src={blog.imageUrl}
+                    alt={blog.title}
+                    className="w-full h-48 object-cover mb-4 rounded-lg"
+                  />
+                )}
+                <h3 className="text-xl font-bold mb-2">{blog.title}</h3>
+                <p>{blog.content.substring(0, 150)}...</p>
               </div>
-              <h3 className="text-xl font-bold mb-2">{blog.title}</h3>
-              <p className="text-gray-700">
-                {blog.content.length > 150
-                  ? `${blog.content.substring(0, 150)}...`
-                  : blog.content}
-              </p>
-            </div>
+            ) : null
           ))}
         </div>
 

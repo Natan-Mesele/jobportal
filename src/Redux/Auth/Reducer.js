@@ -2,10 +2,11 @@ import { GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOU
 
 const initialState = {
     user: null,
+    userId: null,
     isloading: false,
     error: null,
-    jwt: null,
-}
+    jwt: localStorage.getItem("jwt") || null,  // Get JWT from localStorage
+};
 
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -19,19 +20,36 @@ export const authReducer = (state = initialState, action) => {
             }
 
         case REGISTER_SUCCESS:
+            localStorage.setItem("jwt", action.payload.jwt); // Save to localStorage
+            return {
+                ...state,
+                isLoading: false,
+                jwt: action.payload.jwt,
+                success: "Registration successful!",
+            };
+
         case LOGIN_SUCCESS:
             return {
                 ...state,
-                isloading: false,
-                error: null,
+                isLoading: false,
                 jwt: action.payload.jwt,
-            }
+                userId: action.payload.userId, // Store userId here
+                success: "Operation successful",
+            };
 
         case GET_USER_SUCCESS:
-            return { ...state, loading: false, error: null, user: action.payload };
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                user: action.payload
+            };
 
         case LOGOUT:
-            return initialState;
+            return {
+                ...state,
+                jwt: null,
+            };
 
         default:
             return state;

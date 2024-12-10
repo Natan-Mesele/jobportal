@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
-import Feed from './Feed';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Profile from './Profile';
 import SavedJobs from './SavedJobs';
 import Applications from './Applications';
 import JobAlerts from './JobAlerts';
+import { getUser } from '../../Redux/Auth/Action';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState('feed');
   const [profileCompletion, setProfileCompletion] = useState(80); // Example completion percentage
   const [photo, setPhoto] = useState(null);
+
+  const user = useSelector((state) => state.auth.user);
+  const isLoading = useSelector((state) => state.auth.isloading);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => !!state.auth.jwt); // Check if the user is logged in
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handlePhotoUpload = (event) => {
     const file = event.target.files[0];
@@ -17,10 +31,19 @@ const UserProfile = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log('User:', user);
+    console.log('Loading:', isLoading);
+  }, [user, isLoading]);
+
   return (
     <div className="flex flex-row container mx-auto p-6">
       {/* Left Sidebar */}
-      <div className="w-1/3 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6 space-y-6">
+      <div className="w-1/3 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6 space-y-6 h-fit">
         {/* Profile Picture */}
         <div className="text-center">
           <div className="relative inline-block">
@@ -51,12 +74,17 @@ const UserProfile = () => {
             />
           </div>
         </div>
-
         {/* User Information */}
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-gray-700 dark:text-white">John Doe</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-300">johndoe@example.com</p>
-          <p className="text-sm text-gray-500 dark:text-gray-300">+123 456 7890</p>
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-2">
+            {user?.fullName || "Guest"}
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            {user?.email || "Email not available"}
+          </p>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            {user?.phoneNumber || "Phone not available"}
+          </p>
         </div>
 
         {/* Profile Completion */}
@@ -71,13 +99,11 @@ const UserProfile = () => {
           <p className="text-xs text-gray-500 dark:text-gray-300">{profileCompletion}% Completed</p>
         </div>
       </div>
-
       {/* Right Content */}
       <div className="w-2/3 pl-6">
         {/* Navigation Tabs */}
         <div className="tabs flex space-x-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-4">
           {[
-            { id: 'feed', label: 'Feed' },
             { id: 'profile', label: 'My Profile' },
             { id: 'saved', label: 'Saved Jobs' },
             { id: 'applications', label: 'My Applications' },
@@ -85,21 +111,18 @@ const UserProfile = () => {
           ].map((tab) => (
             <button
               key={tab.id}
-              className={`px-4 py-2 font-medium rounded-lg transition-all duration-200 ${
-                activeTab === tab.id
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-              }`}
+              className={`px-4 py-2 font-medium rounded-lg transition-all duration-200 ${activeTab === tab.id
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                }`}
               onClick={() => setActiveTab(tab.id)}
             >
               {tab.label}
             </button>
           ))}
         </div>
-
         {/* Tab Content */}
         <div className="tab-content mt-6">
-          {activeTab === 'feed' && <Feed />}
           {activeTab === 'profile' && <Profile />}
           {activeTab === 'saved' && <SavedJobs />}
           {activeTab === 'applications' && <Applications />}

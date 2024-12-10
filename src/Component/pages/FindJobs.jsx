@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllJobs } from '../../Redux/Job/Action';
+import { saveJob } from '../../Redux/SavedJob/Action';
+import JobCard from './JobCard';
 
 function FindJobs() {
+  const [savedJobs, setSavedJobs] = useState([]);
   const [activeTab, setActiveTab] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
@@ -10,21 +13,21 @@ function FindJobs() {
     location: '',
     careerLevel: '',
     jobType: '',
-    searchQuery: '', // For search input
+    searchQuery: '',
   });
 
   const jobsPerPage = 10;
-
   const dispatch = useDispatch();
-  const { jobs } = useSelector((state) => state.jobs);
+  const { jobs, loading, error } = useSelector((state) => state.jobs);
+  const auth = useSelector((store) => store.auth);
+  const jwt = localStorage.getItem("jwt");
 
   useEffect(() => {
-    dispatch(getAllJobs());
-  }, [dispatch]);
+    dispatch(getAllJobs(jwt));
+  }, [dispatch, jwt]);
 
   const featuredJobs = jobs?.filter((job) => job.featured);
 
-  // Filter jobs based on selected filters and search query
   const applyFilters = (job) => {
     const matchesCategory = !filters.category || job.category === filters.category;
     const matchesLocation = !filters.location || job.location === filters.location;
@@ -36,8 +39,8 @@ function FindJobs() {
     return matchesCategory && matchesLocation && matchesCareerLevel && matchesJobType && matchesSearchQuery;
   };
 
-  const filteredJobs = jobs.filter(applyFilters);
-  const filteredFeaturedJobs = featuredJobs.filter(applyFilters);
+  const filteredJobs = jobs?.filter(applyFilters);
+  const filteredFeaturedJobs = featuredJobs?.filter(applyFilters);
 
   const currentJobs =
     activeTab === 'all'
@@ -68,6 +71,22 @@ function FindJobs() {
       [name]: value,
     }));
     setCurrentPage(1); // Reset to first page when filters change
+  };
+
+  const toggleSaveJob = (jobId) => {
+    const jwt = localStorage.getItem("jwt");
+    const userId = auth?.userId;  // Optional chaining in case auth is undefined
+
+    if (!userId || !jwt) {
+      console.error("User ID or JWT is missing");
+      return;
+    }
+
+    if (!savedJobs.includes(jobId)) {
+      dispatch(saveJob(userId, jobId, jwt));
+      setSavedJobs((prevSavedJobs) => [...prevSavedJobs, jobId]);
+      dispatch(getAllJobs(jwt)); // Optionally refetch jobs after saving
+    }
   };
 
   return (
@@ -200,19 +219,15 @@ function FindJobs() {
 
           <div>
             {currentJobs.map((job) => (
-              <div key={job.id} className="bg-white shadow rounded-lg p-4 mb-4">
-                <h3 className="text-xl font-bold">{job.title}</h3>
-                <p className="text-gray-600">
-                  {job.companyName} - {job.location}
-                </p>
-                <p className="text-sm text-gray-500">
-                  {job.jobType} • {job.category}
-                </p>
-                <p className="text-sm text-gray-600">{job.description}</p>
-                <span className="mt-2 text-blue-600 hover:underline cursor-pointer">View Details</span>
-              </div>
+              <JobCard
+                key={job.id}
+                job={job}
+                toggleSaveJob={toggleSaveJob}
+                savedJobs={savedJobs}
+              />
             ))}
           </div>
+
 
           <div className="flex justify-center items-center mt-6 space-x-4">
             <button

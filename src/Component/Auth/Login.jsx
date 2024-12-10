@@ -26,6 +26,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(login(formData, navigate));
+    navigate('/profile');
   };
 
   const togglePasswordVisibility = () => {

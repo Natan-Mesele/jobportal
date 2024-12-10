@@ -7,7 +7,9 @@ export const createJob = (jobData, jwt) => async (dispatch) => {
     dispatch({ type: CREATE_JOB_REQUEST });
     try {
       const response = await api.post(`${API_BASE_URL}/job`, jobData, {
-        headers: { Authorization: jwt },
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
       });
       dispatch({ type: CREATE_JOB_SUCCESS, payload: response.data });
     } catch (error) {
@@ -19,28 +21,40 @@ export const createJob = (jobData, jwt) => async (dispatch) => {
   };
   
   // Get a Single Job
-  export const getJobById = (id, jwt) => async (dispatch) => {
-    dispatch({ type: GET_JOB_REQUEST });
-    try {
-      const response = await api.get(`${API_BASE_URL}/${id}`, {
-        headers: { Authorization: jwt },
-      });
-      dispatch({ type: GET_JOB_SUCCESS, payload: response.data });
-    } catch (error) {
-      dispatch({
-        type: GET_JOB_FAILURE,
-        payload: error.response ? error.response.data : 'Network Error',
-      });
-    }
-  };
+export const getJobById = (id, jwt) => async (dispatch) => {
+  dispatch({ type: GET_JOB_REQUEST });
   
-  export const getAllJobs = () => async (dispatch) => {
+  try {
+    const response = await api.get(`${API_BASE_URL}/api/job/${id}`, {
+      headers: { Authorization: `Bearer ${jwt}` }, // Ensure Bearer prefix is included
+    });
+    
+    dispatch({
+      type: GET_JOB_SUCCESS,
+      payload: response.data, // Assuming response.data contains the job details
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_JOB_FAILURE,
+      payload: error.response ? error.response.data : 'Network Error', // Check for undefined error.response
+    });
+  }
+};
+  
+  export const getAllJobs = (jwt) => async (dispatch) => {
     dispatch({ type: GET_ALL_JOBS_REQUEST });
+  
     try {
-      const { data } = await api.get("/api/job");
-      console.log("all Jobs", data);
-      dispatch({ type: GET_ALL_JOBS_SUCCESS, payload: data }); 
+      const config = jwt
+        ? { headers: { Authorization: `Bearer ${jwt}` } }
+        : {};
+
+      const { data } = await api.get('/api/job', config);
+      console.log('Fetched Jobs:', data);
+
+      dispatch({ type: GET_ALL_JOBS_SUCCESS, payload: data });
     } catch (error) {
+      console.error('Error fetching jobs:', error.response || error);
       dispatch({
         type: GET_ALL_JOBS_FAILURE,
         payload: error.response ? error.response.data : 'Network Error',

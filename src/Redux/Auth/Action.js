@@ -7,14 +7,8 @@ export const register = (formData) => async (dispatch) => {
   try {
     const { data } = await axios.post(`${API_BASE_URL}/auth/register`, formData);
     if (data.jwt) {
-      // Store JWT in localStorage
       localStorage.setItem("jwt", data.jwt);
-      
-      // Dispatch REGISTER_SUCCESS action to update Redux state
-      dispatch({ type: REGISTER_SUCCESS, payload: data });
-      
-      // Optionally dispatch login to auto-login user (if you want)
-      dispatch({ type: LOGIN_SUCCESS, payload: data });
+      dispatch({ type: REGISTER_SUCCESS, payload: data.jwt });
     }
     console.log("register success", data);
   } catch (error) {
@@ -23,40 +17,26 @@ export const register = (formData) => async (dispatch) => {
   }
 };
 
-
-export const login = (formData, navigate) => async (dispatch) => {
+export const login = (formData) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
   try {
     const { data } = await axios.post(`${API_BASE_URL}/auth/login`, formData);
-
     if (data.jwt) {
-      // Store JWT in localStorage
       localStorage.setItem("jwt", data.jwt);
-
-      // Dispatch login success
-      dispatch({ type: LOGIN_SUCCESS, payload: data });
-
-      // Navigate to profile page on success
-      navigate("/profile");
-    } else {
-      // Handle login failure
       dispatch({
-        type: LOGIN_FAILURE,
-        payload: "Invalid email or password. Please try again.",
+        type: LOGIN_SUCCESS,
+        payload: {
+          jwt: data.jwt,
+          userId: data.userId,
+        },
       });
     }
+    console.log("Login success", data);
   } catch (error) {
-    const errorMessage = error.response
-      ? error.response.data.error
-      : error.message;
-
-    dispatch({
-      type: LOGIN_FAILURE,
-      payload: errorMessage || "An error occurred. Please try again later.",
-    });
-    console.error("Login error:", errorMessage);
+    console.log("Login error:", error);
   }
 };
+
 
 export const getUser = () => async (dispatch) => {
   dispatch({ type: GET_USER_REQUEST });

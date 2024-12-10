@@ -1,19 +1,24 @@
 import api from "../config/api";
 import { CREATE_COMPANY_FAILURE, CREATE_COMPANY_REQUEST, CREATE_COMPANY_SUCCESS, DELETE_COMPANY_FAILURE, DELETE_COMPANY_REQUEST, DELETE_COMPANY_SUCCESS, GET_ALL_COMPANIES_FAILURE, GET_ALL_COMPANIES_REQUEST, GET_ALL_COMPANIES_SUCCESS, GET_COMPANY_BY_ID_FAILURE, GET_COMPANY_BY_ID_REQUEST, GET_COMPANY_BY_ID_SUCCESS, UPDATE_COMPANY_FAILURE, UPDATE_COMPANY_REQUEST, UPDATE_COMPANY_SUCCESS } from "./ActionType";
 
-export const getAllCompanies = () => async (dispatch) => {
-    dispatch({ type: GET_ALL_COMPANIES_REQUEST });
-    try {
-      const { data } = await api.get("/api/company");
-      console.log("All Companies:", data);
-      dispatch({ type: GET_ALL_COMPANIES_SUCCESS, payload: data });
-    } catch (error) {
-      dispatch({
-        type: GET_ALL_COMPANIES_FAILURE,
-        payload: error.response ? error.response.data : "Network Error",
-      });
-    }
-  };
+export const getAllCompanies = (jwt) => async (dispatch) => {
+  dispatch({ type: GET_ALL_COMPANIES_REQUEST });
+
+  try {
+    const config = jwt
+      ? { headers: { Authorization: `Bearer ${jwt}` } }
+      : {};
+    const { data } = await api.get('/api/company', config);
+    console.log('Fetched Companies:', data);
+    dispatch({ type: GET_ALL_COMPANIES_SUCCESS, payload: data });
+  } catch (error) {
+    console.error('Error fetching companies:', error.response || error);
+    dispatch({
+      type: GET_ALL_COMPANIES_FAILURE,
+      payload: error.response ? error.response.data : 'Network Error',
+    });
+  }
+};
   
   // Fetch a single company by ID
   export const getCompanyById = (id) => async (dispatch) => {

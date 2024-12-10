@@ -11,15 +11,21 @@ export const createBlog = (blog) => async (dispatch) => {
     }
   };
   
-  // Get All Blogs
-  export const getAllBlogs = () => async (dispatch) => {
+  export const getAllBlogs = (jwt) => async (dispatch) => {
     dispatch({ type: GETALL_BLOG_REQUEST });
     try {
-      const response = await api.get('/api/blog');
-      console.log("All Blogs:", response);
+      const config = jwt
+        ? { headers: { Authorization: `Bearer ${jwt}` } }
+        : {};
+      const response = await api.get('/api/blog', config);
+      console.log('Fetched Blogs:', response.data);
       dispatch({ type: GETALL_BLOG_SUCCESS, payload: response.data });
     } catch (error) {
-      dispatch({ type: GETALL_BLOG_FAILURE, payload: error.message });
+      console.error('Error fetching blogs:', error.response || error);
+      dispatch({
+        type: GETALL_BLOG_FAILURE,
+        payload: error.response ? error.response.data : 'Network Error',
+      });
     }
   };
   
