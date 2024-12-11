@@ -23,6 +23,7 @@ export const login = (formData) => async (dispatch) => {
     const { data } = await axios.post(`${API_BASE_URL}/auth/login`, formData);
     if (data.jwt) {
       localStorage.setItem("jwt", data.jwt);
+      localStorage.setItem("userId", data.userId);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: {

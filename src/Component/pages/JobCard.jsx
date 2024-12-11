@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function JobCard({ job = {}, toggleSaveJob, savedJobs }) {
+function JobCard({ job = {}, toggleSaveJob, savedJobs = [] }) {
 
   return (
     <div key={job.id} className="bg-white shadow rounded-lg p-4 mb-4 relative">

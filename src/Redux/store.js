@@ -9,6 +9,7 @@ import companyReducer from "./company/Reducer";
 import { blogReducer } from "./Blog/Reducer";
 import { savedJobReducer } from "./SavedJob/Reducer";
 import { profileReducer } from "./UserProfile/Reducer";
+import jobApplicationReducer from "./Applyforjob/Reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   blog: blogReducer,
   savedJob: savedJobReducer,
   profile: profileReducer,
+  jobApplication: jobApplicationReducer,
 });
 
 // Configuring persistence
