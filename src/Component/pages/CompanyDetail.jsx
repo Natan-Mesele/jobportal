@@ -6,12 +6,12 @@ import { getCompanyById } from "../../Redux/company/Action";
 function CompanyDetail() {
   const { id } = useParams(); 
   const dispatch = useDispatch();
-
+  const jwt = localStorage.getItem("jwt");
   const { company, loading, error } = useSelector((state) => state.company);
 
   useEffect(() => {
-    dispatch(getCompanyById(id)); 
-  }, [dispatch, id]);
+    dispatch(getCompanyById(id, jwt)); 
+  }, [dispatch, id, jwt]);
 
   if (loading) return <p>Loading...</p>;
 

@@ -103,7 +103,7 @@ function Header() {
           {isLoggedIn ? (
             <>
               <button
-                className="hover:text-gray-500"
+                className="hover:text-gray-500 text-left"
                 onClick={toggleProfileDropdown}
               >
                 Profile
@@ -158,7 +158,7 @@ function Header() {
             <div className="relative">
               <button
                 onClick={toggleProfileDropdown}
-                className="hover:text-gray-500 text-center"
+                className="hover:text-gray-500"
               >
                 Profile
               </button>

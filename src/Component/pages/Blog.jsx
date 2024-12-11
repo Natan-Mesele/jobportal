@@ -11,28 +11,32 @@ function Blog() {
   const blogsPerPage = 6;
   const jwt = localStorage.getItem("jwt");
 
-
+  // Fetch all blogs
   useEffect(() => {
     dispatch(getAllBlogs(jwt));
   }, [dispatch, jwt]);
 
+  // If loading or error, show loading/error message
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (error && typeof error === 'object') {
     return <div>Error: {error.message || 'An error occurred'}</div>;
-  }  
+  }
 
+  // Filter blogs based on searchTerm (apply to the full list)
   const filteredBlogs = blogs.filter(blog =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     blog.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Calculate pagination values
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
   const startIndex = (currentPage - 1) * blogsPerPage;
   const currentBlogs = filteredBlogs.slice(startIndex, startIndex + blogsPerPage);
 
+  // Handle page changes
   const handleNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -43,6 +47,12 @@ function Blog() {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
+  };
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to page 1 whenever the search term changes
   };
 
   return (
@@ -62,7 +72,7 @@ function Blog() {
               type="text"
               placeholder="Search..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
               className="p-2 rounded-md bg-white text-gray-900 w-full sm:w-80 lg:w-96"
             />
           </div>

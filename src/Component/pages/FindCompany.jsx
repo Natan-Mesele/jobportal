@@ -20,6 +20,11 @@ function FindCompany() {
     dispatch(getAllCompanies(jwt));
   }, [dispatch, jwt]);
 
+  // Reset currentPage to 1 whenever searchQuery or activeTab changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, activeTab]);
+
   const filterCompanies = (companies) => {
     if (!companies) return [];
     return companies.filter((company) =>

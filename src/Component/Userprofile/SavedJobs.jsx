@@ -33,7 +33,7 @@ const SavedJobs = () => {
     <div className="saved-jobs">
       <h2 className="text-xl font-semibold mb-4">Saved Jobs</h2>
       {savedJobs.length === 0 ? (
-        <p>No saved jobs found.</p>
+        <p className='text-center'>No saved jobs found.</p>
       ) : (
         <ul className="space-y-4">
           {savedJobs.map((savedJob) => (
